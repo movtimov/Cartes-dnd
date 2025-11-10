@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panthéon de Faerûn & Chronologie</title>
+    <title>Hub D&D - Royaumes Oubliés</title>
     <style>
         * {
             margin: 0;
@@ -13,747 +13,234 @@
         
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1e1e2e 0%, #2d1b3d 100%);
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
             color: #e0e0e0;
-            padding: 20px;
             min-height: 100vh;
+            padding: 20px;
         }
         
         .container {
-            max-width: 1400px;
+            max-width: 1200px;
             margin: 0 auto;
         }
         
-        h1 {
+        header {
             text-align: center;
+            padding: 40px 20px;
+            margin-bottom: 40px;
+        }
+        
+        h1 {
+            font-size: 3.5em;
             color: #f0d090;
-            font-size: 2.5em;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.8);
             margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            letter-spacing: 2px;
         }
         
         .subtitle {
-            text-align: center;
+            font-size: 1.3em;
             color: #b0b0b0;
-            margin-bottom: 30px;
             font-style: italic;
+            margin-bottom: 20px;
         }
         
-        .tabs {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 30px;
+        .tagline {
+            color: #888;
+            font-size: 0.95em;
         }
         
-        .tab-button {
-            padding: 12px 30px;
-            background: rgba(255,255,255,0.1);
-            border: 2px solid #f0d090;
-            color: #f0d090;
-            cursor: pointer;
-            font-size: 1.1em;
-            border-radius: 8px;
-            transition: all 0.3s;
-        }
-        
-        .tab-button:hover {
-            background: rgba(240,208,144,0.2);
-            transform: translateY(-2px);
-        }
-        
-        .tab-button.active {
-            background: #f0d090;
-            color: #1e1e2e;
-            font-weight: bold;
-        }
-        
-        .tab-content {
-            display: none;
-        }
-        
-        .tab-content.active {
-            display: block;
-        }
-        
-        /* Carte Mentale */
-        .mindmap {
-            display: flex;
-            flex-direction: column;
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 30px;
-            padding: 20px;
+            margin-top: 40px;
         }
         
-        .pantheon-category {
-            background: rgba(255,255,255,0.05);
+        .card {
+            background: rgba(255, 255, 255, 0.05);
             border-radius: 15px;
-            padding: 20px;
-            border: 2px solid #f0d090;
+            padding: 30px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            position: relative;
+            overflow: hidden;
         }
         
-        .category-title {
-            font-size: 1.8em;
-            color: #f0d090;
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(240, 208, 144, 0.1), rgba(139, 69, 19, 0.1));
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 0;
+        }
+        
+        .card:hover::before {
+            opacity: 1;
+        }
+        
+        .card:hover {
+            border-color: #f0d090;
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(240, 208, 144, 0.3);
+        }
+        
+        .card-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .card-icon {
+            font-size: 3em;
             margin-bottom: 15px;
             text-align: center;
-            font-weight: bold;
         }
         
-        .gods-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 15px;
-        }
-        
-        .god-card {
-            background: rgba(255,255,255,0.08);
-            padding: 15px;
-            border-radius: 10px;
-            border-left: 4px solid;
-            transition: all 0.3s;
-            cursor: pointer;
-        }
-        
-        .god-card:hover {
-            transform: translateX(5px);
-            background: rgba(255,255,255,0.12);
-            box-shadow: 0 4px 15px rgba(240,208,144,0.3);
-        }
-        
-        .god-name {
-            font-size: 1.3em;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-        
-        .god-title {
-            font-size: 0.9em;
-            color: #b0b0b0;
-            font-style: italic;
-            margin-bottom: 8px;
-        }
-        
-        .god-domains {
-            font-size: 0.85em;
-            color: #d0d0d0;
-        }
-        
-        .god-alignment {
-            display: inline-block;
-            padding: 3px 8px;
-            border-radius: 5px;
-            font-size: 0.75em;
-            margin-top: 5px;
-            font-weight: bold;
-        }
-        
-        /* Couleurs par alignement */
-        .lg { border-color: #4a90e2; }
-        .ng { border-color: #50c878; }
-        .cg { border-color: #9b59b6; }
-        .ln { border-color: #3498db; }
-        .n { border-color: #95a5a6; }
-        .cn { border-color: #e74c3c; }
-        .le { border-color: #c0392b; }
-        .ne { border-color: #8b0000; }
-        .ce { border-color: #d35400; }
-        
-        /* Frise chronologique */
-        .timeline {
-            position: relative;
-            padding: 20px 0;
-        }
-        
-        .timeline::before {
-            content: '';
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 4px;
-            height: 100%;
-            background: linear-gradient(to bottom, #f0d090, #8b4513);
-        }
-        
-        .timeline-event {
-            position: relative;
-            margin: 30px 0;
-            padding: 20px;
-        }
-        
-        .timeline-event:nth-child(odd) {
-            text-align: right;
-            padding-right: 55%;
-        }
-        
-        .timeline-event:nth-child(even) {
-            text-align: left;
-            padding-left: 55%;
-        }
-        
-        .event-content {
-            background: rgba(255,255,255,0.1);
-            padding: 20px;
-            border-radius: 10px;
-            border: 2px solid #f0d090;
-            position: relative;
-        }
-        
-        .event-content::before {
-            content: '';
-            position: absolute;
-            top: 20px;
-            width: 20px;
-            height: 20px;
-            background: #f0d090;
-            border-radius: 50%;
-            border: 4px solid #1e1e2e;
-        }
-        
-        .timeline-event:nth-child(odd) .event-content::before {
-            right: -60px;
-        }
-        
-        .timeline-event:nth-child(even) .event-content::before {
-            left: -60px;
-        }
-        
-        .event-date {
-            font-size: 1.4em;
+        .card-title {
+            font-size: 1.8em;
             color: #f0d090;
-            font-weight: bold;
             margin-bottom: 10px;
+            font-weight: bold;
+            text-align: center;
         }
         
-        .event-title {
-            font-size: 1.2em;
-            color: #fff;
-            margin-bottom: 8px;
+        .card-description {
+            color: #b0b0b0;
+            line-height: 1.6;
+            text-align: center;
+            font-size: 0.95em;
+        }
+        
+        .card-badge {
+            display: inline-block;
+            background: rgba(240, 208, 144, 0.2);
+            color: #f0d090;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.75em;
+            margin-top: 15px;
             font-weight: bold;
         }
         
-        .event-description {
-            color: #d0d0d0;
-            line-height: 1.6;
+        /* Styles spécifiques par thème */
+        .card.pantheon {
+            border-color: rgba(106, 90, 205, 0.3);
+        }
+        
+        .card.pantheon:hover {
+            border-color: #6a5acd;
+            box-shadow: 0 15px 40px rgba(106, 90, 205, 0.4);
+        }
+        
+        .card.hells {
+            border-color: rgba(220, 20, 60, 0.3);
+        }
+        
+        .card.hells:hover {
+            border-color: #dc143c;
+            box-shadow: 0 15px 40px rgba(220, 20, 60, 0.4);
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            padding: 20px;
+            color: #666;
+            border-top: 1px solid rgba(240, 208, 144, 0.2);
+        }
+        
+        footer a {
+            color: #f0d090;
+            text-decoration: none;
+        }
+        
+        footer a:hover {
+            text-decoration: underline;
         }
         
         @media (max-width: 768px) {
-            .timeline::before {
-                left: 20px;
+            h1 {
+                font-size: 2.5em;
             }
             
-            .timeline-event:nth-child(odd),
-            .timeline-event:nth-child(even) {
-                text-align: left;
-                padding-left: 60px;
-                padding-right: 20px;
-            }
-            
-            .timeline-event:nth-child(odd) .event-content::before,
-            .timeline-event:nth-child(even) .event-content::before {
-                left: -40px;
+            .cards-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🏛️ Univers de Faerûn (D&D 5e 2024)</h1>
-        <p class="subtitle">Les Royaumes Oubliés - Panthéon & Histoire</p>
+        <header>
+            <h1>🐉 Royaumes Oubliés 🐉</h1>
+            <p class="subtitle">Référence D&D 5e - Forgotten Realms</p>
+            <p class="tagline">Explorez les secrets de Faerûn et des plans extérieurs</p>
+        </header>
         
-        <div class="tabs">
-            <button class="tab-button active" onclick="showTab('pantheon')">Panthéon des Dieux</button>
-            <button class="tab-button" onclick="showTab('timeline')">Frise Chronologique</button>
+        <div class="cards-grid">
+            <!-- Carte Panthéon -->
+            <a href="pantheon.html" class="card pantheon">
+                <div class="card-content">
+                    <div class="card-icon">⚡</div>
+                    <h2 class="card-title">Panthéon de Faerûn</h2>
+                    <p class="card-description">
+                        Découvrez tous les dieux de Faerûn, leurs domaines, alignements et influences. 
+                        Inclut aussi la chronologie complète des Royaumes.
+                    </p>
+                    <div class="card-badge">Dieux • Chronologie</div>
+                </div>
+            </a>
+            
+            <!-- Carte Neuf Enfers -->
+            <a href="nine_hells.html" class="card hells">
+                <div class="card-content">
+                    <div class="card-icon">🔥</div>
+                    <h2 class="card-title">Les Neuf Enfers</h2>
+                    <p class="card-description">
+                        Explorez Baator, les Neuf Enfers de loi et de tyrannie. 
+                        Chaque cercle avec son Archidiable, ses lieux notables et passages secrets.
+                    </p>
+                    <div class="card-badge">Plans • Démons</div>
+                </div>
+            </a>
+            
+            <!-- Cartes pour futures pages -->
+            <a href="#" class="card" style="opacity: 0.5; cursor: not-allowed;">
+                <div class="card-content">
+                    <div class="card-icon">📜</div>
+                    <h2 class="card-title">À venir...</h2>
+                    <p class="card-description">
+                        Plus de contenu D&D bientôt disponible !
+                    </p>
+                    <div class="card-badge">En développement</div>
+                </div>
+            </a>
+            
+            <a href="#" class="card" style="opacity: 0.5; cursor: not-allowed;">
+                <div class="card-content">
+                    <div class="card-icon">🗡️</div>
+                    <h2 class="card-title">À venir...</h2>
+                    <p class="card-description">
+                        Plus de contenu D&D bientôt disponible !
+                    </p>
+                    <div class="card-badge">En développement</div>
+                </div>
+            </a>
         </div>
         
-        <div id="pantheon" class="tab-content active">
-            <div class="mindmap">
-                <div class="pantheon-category">
-                    <div class="category-title">☀️ GREATER GODS - Les Dieux Majeurs</div>
-                    <div class="gods-grid">
-                        <div class="god-card ng">
-                            <div class="god-name">Selûne</div>
-                            <div class="god-title">Goddess of the Moon</div>
-                            <div class="god-domains">Domaines : Lumière, Vie</div>
-                            <div class="god-alignment" style="background: #50c878;">CG</div>
-                        </div>
-                        <div class="god-card ne">
-                            <div class="god-name">Shar</div>
-                            <div class="god-title">Goddess of Darkness and Loss</div>
-                            <div class="god-domains">Domaines : Mort, Tromperie</div>
-                            <div class="god-alignment" style="background: #8b0000;">NE</div>
-                        </div>
-                        <div class="god-card ng">
-                            <div class="god-name">Chauntea</div>
-                            <div class="god-title">Goddess of Agriculture</div>
-                            <div class="god-domains">Domaines : Nature, Vie</div>
-                            <div class="god-alignment" style="background: #50c878;">NG</div>
-                        </div>
-                        <div class="god-card n">
-                            <div class="god-name">Mystra</div>
-                            <div class="god-title">Goddess of Magic</div>
-                            <div class="god-domains">Domaines : Arcane, Connaissance</div>
-                            <div class="god-alignment" style="background: #3498db;">NG</div>
-                        </div>
-                        <div class="god-card n">
-                            <div class="god-name">Amaunator</div>
-                            <div class="god-title">God of the Sun</div>
-                            <div class="god-domains">Domaines : Lumière, Vie</div>
-                            <div class="god-alignment" style="background: #3498db;">LN</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="pantheon-category">
-                    <div class="category-title">⚔️ GODS OF FURY - Dieux de la Fureur</div>
-                    <div class="gods-grid">
-                        <div class="god-card cn">
-                            <div class="god-name">Talos</div>
-                            <div class="god-title">God of Storms</div>
-                            <div class="god-domains">Domaines : Tempête</div>
-                            <div class="god-alignment" style="background: #e74c3c;">CE</div>
-                        </div>
-                        <div class="god-card cn">
-                            <div class="god-name">Umberlee</div>
-                            <div class="god-title">Goddess of the Sea</div>
-                            <div class="god-domains">Domaines : Tempête, Nature</div>
-                            <div class="god-alignment" style="background: #e74c3c;">CE</div>
-                        </div>
-                        <div class="god-card n">
-                            <div class="god-name">Malar</div>
-                            <div class="god-title">God of the Hunt</div>
-                            <div class="god-domains">Domaines : Nature</div>
-                            <div class="god-alignment" style="background: #e74c3c;">CE</div>
-                        </div>
-                        <div class="god-card n">
-                            <div class="god-name">Auril</div>
-                            <div class="god-title">Goddess of Winter</div>
-                            <div class="god-domains">Domaines : Nature, Tempête</div>
-                            <div class="god-alignment" style="background: #8b0000;">NE</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="pantheon-category">
-                    <div class="category-title">🌿 INTERMEDIATE GODS - Dieux Intermédiaires</div>
-                    <div class="gods-grid">
-                        <div class="god-card n">
-                            <div class="god-name">Silvanus</div>
-                            <div class="god-title">God of Wild Nature</div>
-                            <div class="god-domains">Domaines : Nature</div>
-                            <div class="god-alignment" style="background: #95a5a6;">N</div>
-                        </div>
-                        <div class="god-card n">
-                            <div class="god-name">Oghma</div>
-                            <div class="god-title">God of Knowledge</div>
-                            <div class="god-domains">Domaines : Connaissance</div>
-                            <div class="god-alignment" style="background: #95a5a6;">N</div>
-                        </div>
-                        <div class="god-card ng">
-                            <div class="god-name">Lathander</div>
-                            <div class="god-title">God of Dawn and Renewal</div>
-                            <div class="god-domains">Domaines : Vie, Lumière</div>
-                            <div class="god-alignment" style="background: #50c878;">NG</div>
-                        </div>
-                        <div class="god-card ln">
-                            <div class="god-name">Kelemvor</div>
-                            <div class="god-title">God of the Dead</div>
-                            <div class="god-domains">Domaines : Mort, Tombe</div>
-                            <div class="god-alignment" style="background: #3498db;">LN</div>
-                        </div>
-                        <div class="god-card n">
-                            <div class="god-name">Tempus</div>
-                            <div class="god-title">God of War</div>
-                            <div class="god-domains">Domaines : Guerre</div>
-                            <div class="god-alignment" style="background: #95a5a6;">N</div>
-                        </div>
-                        <div class="god-card lg">
-                            <div class="god-name">Tyr</div>
-                            <div class="god-title">God of Justice</div>
-                            <div class="god-domains">Domaines : Guerre, Ordre</div>
-                            <div class="god-alignment" style="background: #4a90e2;">LG</div>
-                        </div>
-                        <div class="god-card le">
-                            <div class="god-name">Asmodeus</div>
-                            <div class="god-title">Archfiend God of Indulgence</div>
-                            <div class="god-domains">Domaines : Connaissance, Tromperie</div>
-                            <div class="god-alignment" style="background: #c0392b;">LE</div>
-                        </div>
-                        <div class="god-card cn">
-                            <div class="god-name">Mask</div>
-                            <div class="god-title">God of Thieves</div>
-                            <div class="god-domains">Domaines : Tromperie</div>
-                            <div class="god-alignment" style="background: #e74c3c;">CN</div>
-                        </div>
-                        <div class="god-card cg">
-                            <div class="god-name">Tymora</div>
-                            <div class="god-title">Goddess of Good Fortune</div>
-                            <div class="god-domains">Domaines : Tromperie</div>
-                            <div class="god-alignment" style="background: #9b59b6;">CG</div>
-                        </div>
-                        <div class="god-card ng">
-                            <div class="god-name">Sune</div>
-                            <div class="god-title">Goddess of Love and Beauty</div>
-                            <div class="god-domains">Domaines : Vie, Lumière</div>
-                            <div class="god-alignment" style="background: #50c878;">CG</div>
-                        </div>
-                        <div class="god-card n">
-                            <div class="god-name">Gond</div>
-                            <div class="god-title">God of Craft</div>
-                            <div class="god-domains">Domaines : Connaissance, Forge</div>
-                            <div class="god-alignment" style="background: #95a5a6;">N</div>
-                        </div>
-                        <div class="god-card cg">
-                            <div class="god-name">Mielikki</div>
-                            <div class="god-title">Goddess of Forests</div>
-                            <div class="god-domains">Domaines : Nature</div>
-                            <div class="god-alignment" style="background: #50c878;">NG</div>
-                        </div>
-                        <div class="god-card cg">
-                            <div class="god-name">Lliira</div>
-                            <div class="god-title">Goddess of Joy</div>
-                            <div class="god-domains">Domaines : Vie</div>
-                            <div class="god-alignment" style="background: #9b59b6;">CG</div>
-                        </div>
-                        <div class="god-card n">
-                            <div class="god-name">Helm</div>
-                            <div class="god-title">God of Watchfulness</div>
-                            <div class="god-domains">Domaines : Vie, Lumière</div>
-                            <div class="god-alignment" style="background: #3498db;">LN</div>
-                        </div>
-                        <div class="god-card ln">
-                            <div class="god-name">Ilmater</div>
-                            <div class="god-title">God of Endurance</div>
-                            <div class="god-domains">Domaines : Vie</div>
-                            <div class="god-alignment" style="background: #4a90e2;">LG</div>
-                        </div>
-                        <div class="god-card n">
-                            <div class="god-name">Waukeen</div>
-                            <div class="god-title">Goddess of Trade</div>
-                            <div class="god-domains">Domaines : Connaissance, Tromperie</div>
-                            <div class="god-alignment" style="background: #95a5a6;">N</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="pantheon-category">
-                    <div class="category-title">⚖️ LESSER GODS - Dieux Mineurs</div>
-                    <div class="gods-grid">
-                        <div class="god-card ln">
-                            <div class="god-name">Azuth</div>
-                            <div class="god-title">God of Wizardry</div>
-                            <div class="god-domains">Domaines : Arcane, Connaissance</div>
-                            <div class="god-alignment" style="background: #3498db;">LN</div>
-                        </div>
-                        <div class="god-card ln">
-                            <div class="god-name">Savras</div>
-                            <div class="god-title">God of Divination and Fate</div>
-                            <div class="god-domains">Domaines : Connaissance</div>
-                            <div class="god-alignment" style="background: #3498db;">LN</div>
-                        </div>
-                        <div class="god-card cn">
-                            <div class="god-name">Beshaba</div>
-                            <div class="god-title">Goddess of Misfortune</div>
-                            <div class="god-domains">Domaines : Tromperie</div>
-                            <div class="god-alignment" style="background: #e74c3c;">CE</div>
-                        </div>
-                        <div class="god-card n">
-                            <div class="god-name">Cyric</div>
-                            <div class="god-title">God of Lies</div>
-                            <div class="god-domains">Domaines : Tromperie</div>
-                            <div class="god-alignment" style="background: #e74c3c;">CE</div>
-                        </div>
-                        <div class="god-card ng">
-                            <div class="god-name">Eldath</div>
-                            <div class="god-title">Goddess of Peace</div>
-                            <div class="god-domains">Domaines : Nature, Vie</div>
-                            <div class="god-alignment" style="background: #50c878;">NG</div>
-                        </div>
-                        <div class="god-card cn">
-                            <div class="god-name">Loviatar</div>
-                            <div class="god-title">Goddess of Pain</div>
-                            <div class="god-domains">Domaines : Mort</div>
-                            <div class="god-alignment" style="background: #c0392b;">LE</div>
-                        </div>
-                        <div class="god-card n">
-                            <div class="god-name">Talona</div>
-                            <div class="god-title">Goddess of Poison</div>
-                            <div class="god-domains">Domaines : Mort</div>
-                            <div class="god-alignment" style="background: #e74c3c;">CE</div>
-                        </div>
-                        <div class="god-card lg">
-                            <div class="god-name">Torm</div>
-                            <div class="god-title">God of Courage and Self-Sacrifice</div>
-                            <div class="god-domains">Domaines : Guerre, Ordre</div>
-                            <div class="god-alignment" style="background: #4a90e2;">LG</div>
-                        </div>
-                        <div class="god-card ng">
-                            <div class="god-name">Milil</div>
-                            <div class="god-title">God of Poetry and Song</div>
-                            <div class="god-domains">Domaines : Lumière</div>
-                            <div class="god-alignment" style="background: #50c878;">NG</div>
-                        </div>
-                        <div class="god-card ln">
-                            <div class="god-name">Hoar</div>
-                            <div class="god-title">God of Revenge and Retribution</div>
-                            <div class="god-domains">Domaines : Guerre</div>
-                            <div class="god-alignment" style="background: #3498db;">LN</div>
-                        </div>
-                        <div class="god-card n">
-                            <div class="god-name">Leira</div>
-                            <div class="god-title">Goddess of Illusion</div>
-                            <div class="god-domains">Domaines : Tromperie</div>
-                            <div class="god-alignment" style="background: #e74c3c;">CN</div>
-                        </div>
-                        <div class="god-card n">
-                            <div class="god-name">Shaundakul</div>
-                            <div class="god-title">God of Travel and Exploration</div>
-                            <div class="god-domains">Domaines : Nature, Tempête</div>
-                            <div class="god-alignment" style="background: #e74c3c;">CN</div>
-                        </div>
-                        <div class="god-card n">
-                            <div class="god-name">Deneir</div>
-                            <div class="god-title">God of Writing</div>
-                            <div class="god-domains">Domaines : Connaissance</div>
-                            <div class="god-alignment" style="background: #50c878;">NG</div>
-                        </div>
-                        <div class="god-card n">
-                            <div class="god-name">Gwaeron Windstrom</div>
-                            <div class="god-title">God of Tracking</div>
-                            <div class="god-domains">Domaines : Connaissance, Nature</div>
-                            <div class="god-alignment" style="background: #50c878;">NG</div>
-                        </div>
-                        <div class="god-card n">
-                            <div class="god-name">Valkur</div>
-                            <div class="god-title">God of Sailors</div>
-                            <div class="god-domains">Domaines : Tempête, Guerre</div>
-                            <div class="god-alignment" style="background: #9b59b6;">CG</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="pantheon-category">
-                    <div class="category-title">💀 DEMIGODS - Les Quasi-Dieux</div>
-                    <div class="gods-grid">
-                        <div class="god-card le">
-                            <div class="god-name">Bane</div>
-                            <div class="god-title">Quasi-God of Tyranny</div>
-                            <div class="god-domains">Domaines : Guerre, Ordre</div>
-                            <div class="god-alignment" style="background: #c0392b;">LE</div>
-                        </div>
-                        <div class="god-card ne">
-                            <div class="god-name">Bhaal</div>
-                            <div class="god-title">Quasi-God of Murder</div>
-                            <div class="god-domains">Domaines : Mort</div>
-                            <div class="god-alignment" style="background: #8b0000;">NE</div>
-                        </div>
-                        <div class="god-card ne">
-                            <div class="god-name">Myrkul</div>
-                            <div class="god-title">Quasi-God of Death (Usurped)</div>
-                            <div class="god-domains">Domaines : Mort</div>
-                            <div class="god-alignment" style="background: #8b0000;">NE</div>
-                        </div>
-                        <div class="god-card ce">
-                            <div class="god-name">The Red Knight</div>
-                            <div class="god-title">Goddess of Strategy</div>
-                            <div class="god-domains">Domaines : Guerre</div>
-                            <div class="god-alignment" style="background: #3498db;">LN</div>
-                        </div>
-                        <div class="god-card n">
-                            <div class="god-name">Jergal</div>
-                            <div class="god-title">God (Vestige): Scribe of the Dead</div>
-                            <div class="god-domains">Domaines : Connaissance, Mort</div>
-                            <div class="god-alignment" style="background: #3498db;">LN</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="pantheon-category">
-                    <div class="category-title">🐉 PRIMORDIALS - Les Primordiaux</div>
-                    <div class="gods-grid">
-                        <div class="god-card lg">
-                            <div class="god-name">Akadi</div>
-                            <div class="god-title">Primordial Goddess of Air</div>
-                            <div class="god-domains">Domaines : Tempête</div>
-                            <div class="god-alignment" style="background: #95a5a6;">N</div>
-                        </div>
-                        <div class="god-card n">
-                            <div class="god-name">Grumbar</div>
-                            <div class="god-title">Primordial God of Earth</div>
-                            <div class="god-domains">Domaines : Nature</div>
-                            <div class="god-alignment" style="background: #95a5a6;">N</div>
-                        </div>
-                        <div class="god-card n">
-                            <div class="god-name">Kossuth</div>
-                            <div class="god-title">Primordial God of Fire</div>
-                            <div class="god-domains">Domaines : Lumière</div>
-                            <div class="god-alignment" style="background: #95a5a6;">N</div>
-                        
-        
-        <div id="timeline" class="tab-content">
-            <div class="timeline">
-                <div class="timeline-event">
-                    <div class="event-content">
-                        <div class="event-date">~35 000 CV</div>
-                        <div class="event-title">Jours du Tonnerre</div>
-                        <div class="event-description">Les empires des créateurs (Sarrukhs, Batrachi, Aearee) dominent Faerûn. Les dragons et les géants établissent leurs premiers royaumes.</div>
-                    </div>
-                </div>
-                
-                <div class="timeline-event">
-                    <div class="event-content">
-                        <div class="event-date">~30 000 CV</div>
-                        <div class="event-title">Guerre entre Dragons et Géants</div>
-                        <div class="event-description">Un conflit millénaire dévaste le continent. Les deux races perdent leur suprématie sur Toril.</div>
-                    </div>
-                </div>
-                
-                <div class="timeline-event">
-                    <div class="event-content">
-                        <div class="event-date">~24 000 CV</div>
-                        <div class="event-title">L'Âge des Elfes commence</div>
-                        <div class="event-description">Fondation des premiers royaumes elfiques. Les Tel'Quessir établissent des civilisations magiques avancées à travers Faerûn.</div>
-                    </div>
-                </div>
-                
-                <div class="timeline-event">
-                    <div class="event-content">
-                        <div class="event-date">~12 000 CV</div>
-                        <div class="event-title">Guerres de la Couronne</div>
-                        <div class="event-description">Conflits entre les royaumes elfiques qui mèneront à la chute de nombreuses civilisations elfes et à la Descente des Drows.</div>
-                    </div>
-                </div>
-                
-                <div class="timeline-event">
-                    <div class="event-content">
-                        <div class="event-date">~11 000 CV</div>
-                        <div class="event-title">Descente des Drows</div>
-                        <div class="event-description">Après avoir perdu la guerre, Lolth emmène les elfes noirs dans l'Outreterre où ils deviennent les Drows.</div>
-                    </div>
-                </div>
-                
-                <div class="timeline-event">
-                    <div class="event-content">
-                        <div class="event-date">~3000 CV</div>
-                        <div class="event-title">Fondation de Nétheril</div>
-                        <div class="event-description">Le plus grand empire humain de magie arcanique est établi. Les Nétherisiens créent les cités flottantes et maîtrisent une magie d'une puissance inégalée.</div>
-                    </div>
-                </div>
-                
-                <div class="timeline-event">
-                    <div class="event-content">
-                        <div class="event-date">~2900 CV</div>
-                        <div class="event-title">Apogée de Nétheril</div>
-                        <div class="event-description">Karsus, archimage de Nétheril, tente de devenir un dieu en lançant le sort le plus puissant jamais créé : l'Avatar de Karsus.</div>
-                    </div>
-                </div>
-                
-                <div class="timeline-event">
-                    <div class="event-content">
-                        <div class="event-date">-339 CV (1678 CV)</div>
-                        <div class="event-title">Chute de Nétheril</div>
-                        <div class="event-description">Le sort de Karsus échoue, tuant Mystryl (ancienne déesse de la magie). Toutes les cités flottantes s'écrasent. La Tisseture est temporairement détruite.</div>
-                    </div>
-                </div>
-                
-                <div class="timeline-event">
-                    <div class="event-content">
-                        <div class="event-date">0 CV</div>
-                        <div class="event-title">Les Vallées adoptent le Calendrier des Vallées</div>
-                        <div class="event-description">Début du calendrier moderne de Faerûn. Cette date marque une référence temporelle commune.</div>
-                    </div>
-                </div>
-                
-                <div class="timeline-event">
-                    <div class="event-content">
-                        <div class="event-date">1358 CV</div>
-                        <div class="event-title">Le Temps des Troubles</div>
-                        <div class="event-description">Les dieux sont bannis sur Toril en forme mortelle. Bane, Bhaal et Myrkul meurent. Cyric et Kelemvor accèdent à la divinité. Mystra est tuée et renaît.</div>
-                    </div>
-                </div>
-                
-                <div class="timeline-event">
-                    <div class="event-content">
-                        <div class="event-date">1371 CV</div>
-                        <div class="event-title">Retour de Bane</div>
-                        <div class="event-description">Bane revient à la vie en tuant son propre fils, Iyachtu Xvim, et récupère son portefeuille divin.</div>
-                    </div>
-                </div>
-                
-                <div class="timeline-event">
-                    <div class="event-content">
-                        <div class="event-date">1385 CV</div>
-                        <div class="event-title">La Plaie Magique</div>
-                        <div class="event-description">Cyric et Shar assassinent Mystra. La Tisseture s'effondre, causant des catastrophes magiques à travers Faerûn. Début du bouleversement.</div>
-                    </div>
-                </div>
-                
-                <div class="timeline-event">
-                    <div class="event-content">
-                        <div class="event-date">1385-1395 CV</div>
-                        <div class="event-title">Ère du Bouleversement</div>
-                        <div class="event-description">Catastrophes naturelles et magiques. Des continents entiers changent. De nombreuses régions sont détruites ou transformées. Abeir et Toril échangent des territoires.</div>
-                    </div>
-                </div>
-                
-                <div class="timeline-event">
-                    <div class="event-content">
-                        <div class="event-date">1479 CV</div>
-                        <div class="event-title">Retour de Nétheril</div>
-                        <div class="event-description">Les Nétherisiens survivants dans l'ombre reviennent avec leurs cités flottantes, menaçant à nouveau Faerûn.</div>
-                    </div>
-                </div>
-                
-                <div class="timeline-event">
-                    <div class="event-content">
-                        <div class="event-date">1482 CV</div>
-                        <div class="event-title">La Séparation</div>
-                        <div class="event-description">Ao ordonne le retour à l'ordre ancien. Abeir et Toril se séparent à nouveau. De nombreux dieux présumés morts reviennent (dont Bhaal et Myrkul).</div>
-                    </div>
-                </div>
-                
-                <div class="timeline-event">
-                    <div class="event-content">
-                        <div class="event-date">1487 CV</div>
-                        <div class="event-title">Chute finale de Nétheril</div>
-                        <div class="event-description">Les dernières cités flottantes nétherissiennes sont détruites. La menace de l'Empire d'Ombre prend fin.</div>
-                    </div>
-                </div>
-                
-                <div class="timeline-event">
-                    <div class="event-content">
-                        <div class="event-date">1490 CV</div>
-                        <div class="event-title">La Rage des Dragons</div>
-                        <div class="event-description">Le Culte du Dragon tente de libérer Tiamat des Neuf Enfers. Les héros de Faerûn s'unissent pour stopper l'invasion draconique.</div>
-                    </div>
-                </div>
-                
-                <div class="timeline-event">
-                    <div class="event-content">
-                        <div class="event-date">1492 CV (Présent)</div>
-                        <div class="event-title">Ère Actuelle</div>
-                        <div class="event-description">L'ère des aventuriers. Les Royaumes se reconstruisent après décennies de chaos. De nouvelles menaces émergent tandis que l'équilibre entre les dieux se stabilise.</div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <footer>
+            <p>Contenu basé sur Dungeons & Dragons 5e et Forgotten Realms</p>
+            <p>© Wizards of the Coast • Créé par un fan pour des fans</p>
+        </footer>
     </div>
-    
-    <script>
-        function showTab(tabName) {
-            const tabs = document.querySelectorAll('.tab-content');
-            const buttons = document.querySelectorAll('.tab-button');
-            
-            tabs.forEach(tab => {
-                tab.classList.remove('active');
-            });
-            
-            buttons.forEach(button => {
-                button.classList.remove('active');
-            });
-            
-            document.getElementById(tabName).classList.add('active');
-            event.target.classList.add('active');
-        }
-    </script>
 </body>
 </html>
