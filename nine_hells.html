@@ -1,266 +1,538 @@
-import React, { useState } from 'react';
-import { ChevronDown, ChevronUp, Crown, Flame, Skull, Mountain, Eye } from 'lucide-react';
-
-const NineHells = () => {
-  const [selectedLayer, setSelectedLayer] = useState(null);
-
-  const layers = [
-    {
-      number: 1,
-      name: "Avernus",
-      ruler: "Zariel",
-      title: "Archidiable de la Guerre",
-      description: "Premier cercle des Enfers, champ de bataille éternel",
-      terrain: "Plaines désolées, rivières de sang, cieux enflammés",
-      notablePlaces: [
-        "La Citadelle de Bronze - Forteresse de Zariel",
-        "Le Pont de Sang - Passage vers le Styx",
-        "Les Champs de Massacre - Batailles infinies entre démons et diables",
-        "La Tour de Tiamat - Ancienne résidence de la Reine Dragon"
-      ],
-      passage: "Le Styx coule vers Dis, portails près de la Citadelle de Bronze",
-      color: "from-red-900 to-red-700"
-    },
-    {
-      number: 2,
-      name: "Dis",
-      ruler: "Dispater",
-      title: "Archidiable de la Cité de Fer",
-      description: "Métropole infernale de tours de fer",
-      terrain: "Cité immense de fer et d'acier, forges éternelles",
-      notablePlaces: [
-        "La Cité de Dis - Métropole aux tours de fer qui touchent le ciel",
-        "La Tour de Fer - Palais de Dispater, impénétrable",
-        "Les Forges Infernales - Production d'armes et d'armures",
-        "Les Mines de Fer - Extraction de minerai par les damnés"
-      ],
-      passage: "Portails cachés dans les fondations de la Tour de Fer, descente vers Minauros",
-      color: "from-gray-800 to-gray-600"
-    },
-    {
-      number: 3,
-      name: "Minauros",
-      ruler: "Mammon",
-      title: "Archidiable de l'Avarice",
-      description: "Marais fétide d'avidité et de corruption",
-      terrain: "Marécages toxiques, pluie acide permanente, boue corrosive",
-      notablePlaces: [
-        "Le Palais Englouti - Résidence sombrant de Mammon",
-        "Les Mines de Gemmes - Extraction de richesses maudites",
-        "La Cité de Jangling Hiter - Ville commerçante corrompue",
-        "Les Fosses de Boue - Prison pour débiteurs éternels"
-      ],
-      passage: "Rivières empoisonnées menant à Phlegethos, grottes profondes",
-      color: "from-yellow-800 to-yellow-600"
-    },
-    {
-      number: 4,
-      name: "Phlegethos",
-      ruler: "Belial & Fierna",
-      title: "Archidiables du Feu et de la Tentation",
-      description: "Royaume de flammes et de désir",
-      terrain: "Volcans actifs, lacs de lave, montagnes de feu",
-      notablePlaces: [
-        "Abriymoch - Cité volcanique, capitale du cercle",
-        "Le Palais d'Obsidienne - Résidence de Belial et Fierna",
-        "Les Mines de Soufre - Extraction de ressources infernales",
-        "La Fournaise Éternelle - Source de feu primordial"
-      ],
-      passage: "Tunnels de lave vers Stygia, portails dans le Palais d'Obsidienne",
-      color: "from-orange-700 to-red-600"
-    },
-    {
-      number: 5,
-      name: "Stygia",
-      ruler: "Levistus",
-      title: "Archidiable emprisonné dans la glace",
-      description: "Océan gelé de trahison",
-      terrain: "Mer gelée, icebergs, eaux noires et glaciales",
-      notablePlaces: [
-        "Le Tombeau de Glace - Prison de Levistus, visible mais inaccessible",
-        "Tantlin - Cité portuaire gelée",
-        "Les Galères de Glace - Vaisseaux voguant sur la mer gelée",
-        "Les Grottes Glacées - Labyrinthes sous la surface"
-      ],
-      passage: "Failles dans la glace menant à Malbolge, portails dans les profondeurs",
-      color: "from-cyan-700 to-blue-800"
-    },
-    {
-      number: 6,
-      name: "Malbolge",
-      ruler: "Glasya",
-      title: "Archidiable de la Corruption, fille d'Asmodée",
-      description: "Montagnes qui s'effondrent sans cesse",
-      terrain: "Montagnes instables, avalanches continuelles, pentes traîtresses",
-      notablePlaces: [
-        "Ossiea - Citadelle de Glasya, seule structure stable",
-        "Les Pentes Changeantes - Terrain en mouvement perpétuel",
-        "Les Mines de Cuivre - Extraction minière dangereuse",
-        "Le Tribunal de la Culpabilité - Jugement des âmes corrompues"
-      ],
-      passage: "Gouffres s'ouvrant vers Maladomini, passages dans Ossiea",
-      color: "from-purple-800 to-purple-600"
-    },
-    {
-      number: 7,
-      name: "Maladomini",
-      ruler: "Baalzebul",
-      title: "Seigneur des Mouches, Archidiable déchu",
-      description: "Ruines d'une grandeur perdue",
-      terrain: "Cités en ruines, nuages de mouches, désolation urbaine",
-      notablePlaces: [
-        "Malagard - Capitale en ruines, jadis magnifique",
-        "Le Palais des Mouches - Résidence décrépite de Baalzebul",
-        "Les Archives Infernales - Bibliothèques de contrats et secrets",
-        "Les Sept Citadelles Ruinées - Monuments à l'orgueil"
-      ],
-      passage: "Tunnels effondrés vers Cania, portails dans les Archives",
-      color: "from-amber-800 to-amber-600"
-    },
-    {
-      number: 8,
-      name: "Cania",
-      ruler: "Mephistopheles",
-      title: "Archidiable de la Sorcellerie",
-      description: "Glacier infernal de glace brûlante",
-      terrain: "Glaciers de glace qui brûle, tempêtes de neige mordante, froid extrême",
-      notablePlaces: [
-        "Mephistar - Citadelle de glace, centre de savoir arcanique",
-        "La Citadelle de Glace - Forteresse et académie magique",
-        "Les Bibliothèques Gelées - Plus grand savoir des Enfers",
-        "Le Laboratoire Arcanique - Expérimentations magiques interdites"
-      ],
-      passage: "La descente finale vers Nessus, portails gardés dans Mephistar",
-      color: "from-blue-900 to-indigo-900"
-    },
-    {
-      number: 9,
-      name: "Nessus",
-      ruler: "Asmodée",
-      title: "Seigneur Suprême des Neuf Enfers",
-      description: "Le plus profond des Enfers, royaume du Seigneur Suprême",
-      terrain: "Canyons abyssaux, forteresses titanesques, pouvoir absolu",
-      notablePlaces: [
-        "Malsheem - La Forteresse d'Asmodée, plus grande structure des Enfers",
-        "Les Fosses de la Création - Où sont nés les diables",
-        "La Salle du Trône - Siège du pouvoir absolu",
-        "Les Neuf Légions - Armées d'élite d'Asmodée",
-        "Le Puit des Âmes - Source de pouvoir primordial"
-      ],
-      passage: "Aucune sortie connue vers le bas. Seul Asmodée connaît tous les secrets.",
-      color: "from-black to-red-950"
-    }
-  ];
-
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 via-red-950 to-black text-gray-100 p-8">
-      <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-12">
-          <h1 className="text-5xl font-bold mb-4 text-red-500 flex items-center justify-center gap-3">
-            <Flame className="w-12 h-12" />
-            Les Neuf Enfers de Baator
-            <Flame className="w-12 h-12" />
-          </h1>
-          <p className="text-xl text-gray-300">Domaine infernal de loi et de tyrannie</p>
-          <p className="text-sm text-gray-400 mt-2">Cliquez sur chaque cercle pour découvrir ses secrets</p>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Les Neuf Enfers de Baator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to bottom, #1a1a1a, #4a0a0a, #000000);
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding: 20px;
+        }
+        
+        h1 {
+            font-size: 3.5em;
+            color: #ef4444;
+            text-shadow: 0 0 20px rgba(239, 68, 68, 0.5);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+        
+        .flame-icon {
+            font-size: 1em;
+            animation: flicker 2s infinite;
+        }
+        
+        @keyframes flicker {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        .subtitle {
+            font-size: 1.5em;
+            color: #b0b0b0;
+            margin-bottom: 10px;
+        }
+        
+        .instruction {
+            color: #888;
+            font-size: 0.9em;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-bottom: 30px;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid #ef4444;
+            color: #ef4444;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        
+        .back-link:hover {
+            background: rgba(239, 68, 68, 0.2);
+            transform: translateX(-5px);
+        }
+        
+        .layers {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            position: relative;
+        }
+        
+        .layer-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+            border: 2px solid #b91c1c;
+            border-radius: 15px;
+            padding: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+        
+        .layer-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 30px rgba(239, 68, 68, 0.3);
+        }
+        
+        .layer-card.active {
+            border-color: #ef4444;
+            box-shadow: 0 0 30px rgba(239, 68, 68, 0.5);
+        }
+        
+        .layer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .layer-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .layer-number {
+            font-size: 4em;
+            font-weight: bold;
+            color: rgba(239, 68, 68, 0.5);
+        }
+        
+        .layer-info h2 {
+            font-size: 2em;
+            color: #ffffff;
+            margin-bottom: 5px;
+        }
+        
+        .layer-info p {
+            color: #b0b0b0;
+            font-style: italic;
+        }
+        
+        .chevron {
+            font-size: 2em;
+            color: #ef4444;
+            transition: transform 0.3s;
+        }
+        
+        .layer-card.active .chevron {
+            transform: rotate(180deg);
+        }
+        
+        .ruler-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .crown-icon {
+            font-size: 1.5em;
+            color: #fbbf24;
+        }
+        
+        .ruler-name {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #fbbf24;
+        }
+        
+        .ruler-title {
+            color: #b0b0b0;
+            font-size: 0.9em;
+        }
+        
+        .layer-details {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out;
+        }
+        
+        .layer-card.active .layer-details {
+            max-height: 2000px;
+            transition: max-height 0.5s ease-in;
+        }
+        
+        .detail-section {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        
+        .detail-section h3 {
+            font-size: 1.3em;
+            color: #ef4444;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .detail-section p {
+            color: #b0b0b0;
+            line-height: 1.6;
+        }
+        
+        .places-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .places-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 15px;
+            color: #b0b0b0;
+            line-height: 1.5;
+        }
+        
+        .skull-icon {
+            color: #ef4444;
+            font-size: 1.2em;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        
+        .connector {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 2em;
+            color: #b91c1c;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .info-box {
+            background: linear-gradient(135deg, #7f1d1d, #000000);
+            border: 2px solid #b91c1c;
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 60px;
+        }
+        
+        .info-box h3 {
+            font-size: 1.8em;
+            color: #ef4444;
+            margin-bottom: 20px;
+        }
+        
+        .info-box p {
+            color: #b0b0b0;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+        
+        /* Couleurs spécifiques par cercle */
+        .layer-1 { background: linear-gradient(135deg, rgba(127, 29, 29, 0.3), rgba(153, 27, 27, 0.2)); }
+        .layer-2 { background: linear-gradient(135deg, rgba(55, 65, 81, 0.3), rgba(75, 85, 99, 0.2)); }
+        .layer-3 { background: linear-gradient(135deg, rgba(133, 77, 14, 0.3), rgba(161, 98, 7, 0.2)); }
+        .layer-4 { background: linear-gradient(135deg, rgba(154, 52, 18, 0.3), rgba(185, 28, 28, 0.2)); }
+        .layer-5 { background: linear-gradient(135deg, rgba(21, 94, 117, 0.3), rgba(30, 58, 138, 0.2)); }
+        .layer-6 { background: linear-gradient(135deg, rgba(88, 28, 135, 0.3), rgba(109, 40, 217, 0.2)); }
+        .layer-7 { background: linear-gradient(135deg, rgba(146, 64, 14, 0.3), rgba(180, 83, 9, 0.2)); }
+        .layer-8 { background: linear-gradient(135deg, rgba(30, 27, 75, 0.3), rgba(67, 56, 202, 0.2)); }
+        .layer-9 { background: linear-gradient(135deg, rgba(0, 0, 0, 0.5), rgba(69, 10, 10, 0.3)); }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .layer-number {
+                font-size: 3em;
+            }
+            
+            .layer-info h2 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link">← Retour au hub</a>
+        
+        <header>
+            <h1>
+                <span class="flame-icon">🔥</span>
+                Les Neuf Enfers de Baator
+                <span class="flame-icon">🔥</span>
+            </h1>
+            <p class="subtitle">Domaine infernal de loi et de tyrannie</p>
+            <p class="instruction">Cliquez sur chaque cercle pour découvrir ses secrets</p>
+        </header>
+        
+        <div class="layers" id="layers-container"></div>
+        
+        <div class="info-box">
+            <h3>⚖️ La Hiérarchie Infernale</h3>
+            <p>
+                Les Neuf Enfers de Baator sont organisés en une hiérarchie stricte. Chaque cercle est dirigé par un Archidiable, 
+                et tous répondent ultimement à Asmodée, le Seigneur Suprême. Le Styx, fleuve de l'oubli, traverse plusieurs cercles.
+            </p>
+            <p>
+                La descente d'un cercle à l'autre devient progressivement plus difficile et dangereuse. Peu nombreux sont ceux 
+                qui ont vu Nessus et vécu pour en parler.
+            </p>
         </div>
-
-        <div className="space-y-4">
-          {layers.map((layer, index) => (
-            <div key={layer.number} className="relative">
-              {/* Connecteur vers le niveau suivant */}
-              {index < layers.length - 1 && (
-                <div className="absolute left-1/2 -translate-x-1/2 -bottom-4 z-0">
-                  <ChevronDown className="w-8 h-8 text-red-600 animate-pulse" />
-                </div>
-              )}
-              
-              <div
-                className={`bg-gradient-to-r ${layer.color} rounded-lg border-2 border-red-700 shadow-2xl cursor-pointer transition-all hover:scale-[1.02] ${
-                  selectedLayer === layer.number ? 'ring-4 ring-red-500' : ''
-                }`}
-                onClick={() => setSelectedLayer(selectedLayer === layer.number ? null : layer.number)}
-              >
-                <div className="p-6">
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center gap-4">
-                      <div className="text-6xl font-bold text-red-400 opacity-50">
-                        {layer.number}
-                      </div>
-                      <div>
-                        <h2 className="text-3xl font-bold text-white">{layer.name}</h2>
-                        <p className="text-gray-300 italic">{layer.description}</p>
-                      </div>
-                    </div>
-                    {selectedLayer === layer.number ? (
-                      <ChevronUp className="w-8 h-8 text-red-400" />
-                    ) : (
-                      <ChevronDown className="w-8 h-8 text-red-400" />
-                    )}
-                  </div>
-
-                  <div className="flex items-center gap-3 bg-black bg-opacity-40 p-3 rounded-lg mb-4">
-                    <Crown className="w-6 h-6 text-yellow-500" />
-                    <div>
-                      <div className="font-bold text-xl text-yellow-400">{layer.ruler}</div>
-                      <div className="text-sm text-gray-300">{layer.title}</div>
-                    </div>
-                  </div>
-
-                  {selectedLayer === layer.number && (
-                    <div className="mt-6 space-y-4 animate-fadeIn">
-                      <div className="bg-black bg-opacity-50 p-4 rounded-lg">
-                        <h3 className="font-bold text-lg mb-2 text-red-400 flex items-center gap-2">
-                          <Mountain className="w-5 h-5" />
-                          Terrain
-                        </h3>
-                        <p className="text-gray-300">{layer.terrain}</p>
-                      </div>
-
-                      <div className="bg-black bg-opacity-50 p-4 rounded-lg">
-                        <h3 className="font-bold text-lg mb-3 text-red-400 flex items-center gap-2">
-                          <Eye className="w-5 h-5" />
-                          Lieux Notables
-                        </h3>
-                        <ul className="space-y-2">
-                          {layer.notablePlaces.map((place, i) => (
-                            <li key={i} className="flex items-start gap-2">
-                              <Skull className="w-4 h-4 mt-1 text-red-500 flex-shrink-0" />
-                              <span className="text-gray-300">{place}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-
-                      <div className="bg-black bg-opacity-50 p-4 rounded-lg">
-                        <h3 className="font-bold text-lg mb-2 text-red-400 flex items-center gap-2">
-                          <ChevronDown className="w-5 h-5" />
-                          Passage vers le niveau suivant
-                        </h3>
-                        <p className="text-gray-300">{layer.passage}</p>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="mt-12 bg-gradient-to-r from-red-900 to-black p-6 rounded-lg border-2 border-red-700">
-          <h3 className="text-2xl font-bold mb-4 text-red-400">La Hiérarchie Infernale</h3>
-          <p className="text-gray-300 mb-4">
-            Les Neuf Enfers de Baator sont organisés en une hiérarchie stricte. Chaque cercle est dirigé par un Archidiable, 
-            et tous répondent ultimement à Asmodée, le Seigneur Suprême. Le Styx, fleuve de l'oubli, traverse plusieurs cercles.
-          </p>
-          <p className="text-gray-300">
-            La descente d'un cercle à l'autre devient progressivement plus difficile et dangereuse. Peu nombreux sont ceux 
-            qui ont vu Nessus et vécu pour en parler.
-          </p>
-        </div>
-      </div>
     </div>
-  );
-};
-
-export default NineHells;
+    
+    <script>
+        const layers = [
+            {
+                number: 1,
+                name: "Avernus",
+                ruler: "Zariel",
+                title: "Archidiable de la Guerre",
+                description: "Premier cercle des Enfers, champ de bataille éternel",
+                terrain: "Plaines désolées, rivières de sang, cieux enflammés",
+                notablePlaces: [
+                    "La Citadelle de Bronze - Forteresse de Zariel",
+                    "Le Pont de Sang - Passage vers le Styx",
+                    "Les Champs de Massacre - Batailles infinies entre démons et diables",
+                    "La Tour de Tiamat - Ancienne résidence de la Reine Dragon"
+                ],
+                passage: "Le Styx coule vers Dis, portails près de la Citadelle de Bronze"
+            },
+            {
+                number: 2,
+                name: "Dis",
+                ruler: "Dispater",
+                title: "Archidiable de la Cité de Fer",
+                description: "Métropole infernale de tours de fer",
+                terrain: "Cité immense de fer et d'acier, forges éternelles",
+                notablePlaces: [
+                    "La Cité de Dis - Métropole aux tours de fer qui touchent le ciel",
+                    "La Tour de Fer - Palais de Dispater, impénétrable",
+                    "Les Forges Infernales - Production d'armes et d'armures",
+                    "Les Mines de Fer - Extraction de minerai par les damnés"
+                ],
+                passage: "Portails cachés dans les fondations de la Tour de Fer, descente vers Minauros"
+            },
+            {
+                number: 3,
+                name: "Minauros",
+                ruler: "Mammon",
+                title: "Archidiable de l'Avarice",
+                description: "Marais fétide d'avidité et de corruption",
+                terrain: "Marécages toxiques, pluie acide permanente, boue corrosive",
+                notablePlaces: [
+                    "Le Palais Englouti - Résidence sombrant de Mammon",
+                    "Les Mines de Gemmes - Extraction de richesses maudites",
+                    "La Cité de Jangling Hiter - Ville commerçante corrompue",
+                    "Les Fosses de Boue - Prison pour débiteurs éternels"
+                ],
+                passage: "Rivières empoisonnées menant à Phlegethos, grottes profondes"
+            },
+            {
+                number: 4,
+                name: "Phlegethos",
+                ruler: "Belial & Fierna",
+                title: "Archidiables du Feu et de la Tentation",
+                description: "Royaume de flammes et de désir",
+                terrain: "Volcans actifs, lacs de lave, montagnes de feu",
+                notablePlaces: [
+                    "Abriymoch - Cité volcanique, capitale du cercle",
+                    "Le Palais d'Obsidienne - Résidence de Belial et Fierna",
+                    "Les Mines de Soufre - Extraction de ressources infernales",
+                    "La Fournaise Éternelle - Source de feu primordial"
+                ],
+                passage: "Tunnels de lave vers Stygia, portails dans le Palais d'Obsidienne"
+            },
+            {
+                number: 5,
+                name: "Stygia",
+                ruler: "Levistus",
+                title: "Archidiable emprisonné dans la glace",
+                description: "Océan gelé de trahison",
+                terrain: "Mer gelée, icebergs, eaux noires et glaciales",
+                notablePlaces: [
+                    "Le Tombeau de Glace - Prison de Levistus, visible mais inaccessible",
+                    "Tantlin - Cité portuaire gelée",
+                    "Les Galères de Glace - Vaisseaux voguant sur la mer gelée",
+                    "Les Grottes Glacées - Labyrinthes sous la surface"
+                ],
+                passage: "Failles dans la glace menant à Malbolge, portails dans les profondeurs"
+            },
+            {
+                number: 6,
+                name: "Malbolge",
+                ruler: "Glasya",
+                title: "Archidiable de la Corruption, fille d'Asmodée",
+                description: "Montagnes qui s'effondrent sans cesse",
+                terrain: "Montagnes instables, avalanches continuelles, pentes traîtresses",
+                notablePlaces: [
+                    "Ossiea - Citadelle de Glasya, seule structure stable",
+                    "Les Pentes Changeantes - Terrain en mouvement perpétuel",
+                    "Les Mines de Cuivre - Extraction minière dangereuse",
+                    "Le Tribunal de la Culpabilité - Jugement des âmes corrompues"
+                ],
+                passage: "Gouffres s'ouvrant vers Maladomini, passages dans Ossiea"
+            },
+            {
+                number: 7,
+                name: "Maladomini",
+                ruler: "Baalzebul",
+                title: "Seigneur des Mouches, Archidiable déchu",
+                description: "Ruines d'une grandeur perdue",
+                terrain: "Cités en ruines, nuages de mouches, désolation urbaine",
+                notablePlaces: [
+                    "Malagard - Capitale en ruines, jadis magnifique",
+                    "Le Palais des Mouches - Résidence décrépite de Baalzebul",
+                    "Les Archives Infernales - Bibliothèques de contrats et secrets",
+                    "Les Sept Citadelles Ruinées - Monuments à l'orgueil"
+                ],
+                passage: "Tunnels effondrés vers Cania, portails dans les Archives"
+            },
+            {
+                number: 8,
+                name: "Cania",
+                ruler: "Mephistopheles",
+                title: "Archidiable de la Sorcellerie",
+                description: "Glacier infernal de glace brûlante",
+                terrain: "Glaciers de glace qui brûle, tempêtes de neige mordante, froid extrême",
+                notablePlaces: [
+                    "Mephistar - Citadelle de glace, centre de savoir arcanique",
+                    "La Citadelle de Glace - Forteresse et académie magique",
+                    "Les Bibliothèques Gelées - Plus grand savoir des Enfers",
+                    "Le Laboratoire Arcanique - Expérimentations magiques interdites"
+                ],
+                passage: "La descente finale vers Nessus, portails gardés dans Mephistar"
+            },
+            {
+                number: 9,
+                name: "Nessus",
+                ruler: "Asmodée",
+                title: "Seigneur Suprême des Neuf Enfers",
+                description: "Le plus profond des Enfers, royaume du Seigneur Suprême",
+                terrain: "Canyons abyssaux, forteresses titanesques, pouvoir absolu",
+                notablePlaces: [
+                    "Malsheem - La Forteresse d'Asmodée, plus grande structure des Enfers",
+                    "Les Fosses de la Création - Où sont nés les diables",
+                    "La Salle du Trône - Siège du pouvoir absolu",
+                    "Les Neuf Légions - Armées d'élite d'Asmodée",
+                    "Le Puit des Âmes - Source de pouvoir primordial"
+                ],
+                passage: "Aucune sortie connue vers le bas. Seul Asmodée connaît tous les secrets."
+            }
+        ];
+        
+        function createLayerCard(layer, index) {
+            const isLast = index === layers.length - 1;
+            
+            const card = document.createElement('div');
+            card.className = `layer-card layer-${layer.number}`;
+            card.onclick = () => toggleLayer(layer.number);
+            
+            card.innerHTML = `
+                <div class="layer-header">
+                    <div class="layer-left">
+                        <div class="layer-number">${layer.number}</div>
+                        <div class="layer-info">
+                            <h2>${layer.name}</h2>
+                            <p>${layer.description}</p>
+                        </div>
+                    </div>
+                    <div class="chevron">▼</div>
+                </div>
+                
+                <div class="ruler-section">
+                    <div class="crown-icon">👑</div>
+                    <div>
+                        <div class="ruler-name">${layer.ruler}</div>
+                        <div class="ruler-title">${layer.title}</div>
+                    </div>
+                </div>
+                
+                <div class="layer-details">
+                    <div class="detail-section">
+                        <h3>⛰️ Terrain</h3>
+                        <p>${layer.terrain}</p>
+                    </div>
+                    
+                    <div class="detail-section">
+                        <h3>👁️ Lieux Notables</h3>
+                        <ul class="places-list">
+                            ${layer.notablePlaces.map(place => `
+                                <li>
+                                    <span class="skull-icon">💀</span>
+                                    <span>${place}</span>
+                                </li>
+                            `).join('')}
+                        </ul>
+                    </div>
+                    
+                    <div class="detail-section">
+                        <h3>▼ Passage vers le niveau suivant</h3>
+                        <p>${layer.passage}</p>
+                    </div>
+                </div>
+            `;
+            
+            return { card, isLast };
+        }
+        
+        function toggleLayer(layerNumber) {
+            const card = document.querySelector(`.layer-${layerNumber}`);
+            card.classList.toggle('active');
+        }
+        
+        function renderLayers() {
+            const container = document.getElementById('layers-container');
+            
+            layers.forEach((layer, index) => {
+                const { card, isLast } = createLayerCard(layer, index);
+                container.appendChild(card);
+                
+                if (!isLast) {
+                    const connector = document.createElement('div');
+                    connector.className = 'connector';
+                    connector.innerHTML = '▼';
+                    container.appendChild(connector);
+                }
+            });
+        }
+        
+        renderLayers();
+    </script>
+</body>
+</html>
